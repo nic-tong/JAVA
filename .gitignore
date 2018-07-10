@@ -1,0 +1,32 @@
+target/
+.svn/
+.versionsBackup
+*.swp
+*.iml
+.gradle
+/local.properties
+.idea/
+/build
+.project
+.settings/
+.classpath
+logs/
+
+
+#some local files
+*/.settings/
+*/.DS_Store
+.DS_Store
+*/.idea/
+
+## File-based project format:
+*.iws
+*.iml
+*.ipr
+
+## Additional for IntelliJ
+out/
+gen/
+*.xls
+
+img/
