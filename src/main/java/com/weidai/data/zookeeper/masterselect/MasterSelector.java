@@ -57,6 +57,7 @@ public class MasterSelector {
 			
 			@Override
 			public void handleDataDeleted(String dataPath) throws Exception {
+				System.out.println(serverNode.getClientName() +" 接收到 " +masterNode.getClientName()+ "删除节点操作，开始竞选master");
 				vieMaster();
 				//监听节点删除
 //				scheduledExecutor.schedule(new Runnable() {
@@ -96,7 +97,7 @@ public class MasterSelector {
 			throw new RuntimeException("服务已经停止...");
 		isRuning = false;
 		
-		zkClient.subscribeDataChanges(MASTER_PATH, dataListener);
+		zkClient.unsubscribeDataChanges(MASTER_PATH, dataListener);
 		releaseMaster();
 	}
 	/**
@@ -116,7 +117,7 @@ public class MasterSelector {
 			return;
 		
 		try {
-			System.out.println(serverNode.getClientName() + "来争抢master节点.");
+//			System.out.println(serverNode.getClientName() + "来争抢master节点.");
 			zkClient.createEphemeral(MASTER_PATH, serverNode);
 			masterNode = serverNode;
 			System.out.println(serverNode.getClientName() + "竞选成功！ 成为了master节点.");
@@ -126,12 +127,23 @@ public class MasterSelector {
 				
 				@Override
 				public void run() {
+					// 释放调master节点  并从新参与竞争
 					releaseMaster();
+					
+					/**
+					 * 释放掉mater 并停掉机器 不再竞争了
+					 */
+//					stop();
 					
 				}
 			}, 5, TimeUnit.SECONDS);
 		} catch (ZkNodeExistsException e) {
-			
+			ClientData clientNode = zkClient.readData(MASTER_PATH);
+			if (null == clientNode) {
+				vieMaster();
+			} else { 
+				masterNode = clientNode;
+			}
 		}
 	}
 
