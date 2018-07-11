@@ -120,6 +120,8 @@ public class MasterSelector {
 			zkClient.createEphemeral(MASTER_PATH, serverNode);
 			masterNode = serverNode;
 			System.out.println(serverNode.getClientName() + "竞选成功！ 成为了master节点.");
+			
+			// 5s 后 开始执行释放master操作 （人为制造异常）
 			scheduledExecutor.schedule(new Runnable() {
 				
 				@Override
