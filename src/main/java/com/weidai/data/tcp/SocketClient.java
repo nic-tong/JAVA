@@ -16,13 +16,11 @@ public class SocketClient {
 
 	public static void main(String[] args) {
 		try {
-			Socket socket = new Socket("localhost", 8123);
+			Socket socket = new Socket("localhost", 8080);
 			PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			writer.write("hello wang!");
 			writer.print("hello zhang!");
-			writer.println("hello li!");
-			writer.println("hello zhao!");
 			while(true) {
 				String input = reader.readLine();
 				if (input == null)

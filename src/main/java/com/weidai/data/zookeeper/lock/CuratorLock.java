@@ -55,7 +55,6 @@ public class CuratorLock {
 					try {
 						lock.release();
 //						SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss,SSS");
-
 //						String orderNo = sdf.format(new Date());
 						System.out.println(client.getZookeeperClient().getZooKeeper().getSessionId() + "释放了锁 " + System.currentTimeMillis());
 					} catch (Exception e) {
